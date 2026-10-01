@@ -1,0 +1,15 @@
+# Isolated development worktrees (CLAUDE.md convention)
+.worktrees/
+
+# Subagent-driven-development scratch (briefs, reports, diffs, progress ledger)
+.superpowers/
+
+# Superpowers brainstorming/plans scratch (any skill subdir) — never commit
+**/docs/superpowers/
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
