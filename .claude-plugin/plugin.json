@@ -1,7 +1,7 @@
 {
   "name": "summarize-article",
   "description": "Summarize web articles into German Markdown notes with the cleaned original text attached",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Valgard Trontheim"
   },
