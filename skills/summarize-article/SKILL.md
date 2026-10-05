@@ -15,13 +15,31 @@ Verarbeite **{$ARGUMENTS}** — je nach Argument-Typ im passenden Modus.
 | Dateipfad (`.md`) | **Aktualisieren (Einzeldatei)** | Zusammenfassung und Originaltext neu generieren |
 | Verzeichnispfad | **Aktualisieren (Batch)** | Alle MD-Dateien im Verzeichnis aktualisieren |
 
+## Ablageordner
+
+Der Ablageordner ist der Wert der Umgebungsvariable `ARTICLE_SUMMARIES_DIR`; ist sie nicht gesetzt oder leer, gilt `~/Documents/article_summaries/`. Per Shell auflösen, nicht raten:
+
+```bash
+echo "${ARTICLE_SUMMARIES_DIR:-$HOME/Documents/article_summaries}"
+```
+
+Beginnt der Wert mit `~`, das `~` durch `$HOME` ersetzen — in einer Variable expandiert die Shell es nicht. Existiert der Ordner noch nicht, vor dem Speichern mit `mkdir -p` anlegen.
+
+## Abrufen
+
+Zuerst WebFetch. Bei 403/401 einmal mit cURL nachfassen:
+
+```bash
+curl -sL -A "Mozilla/5.0" "<URL>"
+```
+
 ## Vorgehen: Neu erstellen (URL)
 
-1. **Abrufen** des Artikels (WebFetch, bei 403/401 cURL-Fallback)
+1. **Abrufen** des Artikels (siehe *Abrufen*)
 2. **Originaltext sichern:** Den abgerufenen Artikeltext (bereinigt um Navigation, Werbung, Footer etc.) für den `<details>`-Block aufbewahren
-3. **Duplikat-Check:** Prüfen ob unter `/Users/valgard/Documents/!AI/article_summaries/` bereits eine Datei für diesen Artikel existiert → falls ja, den User fragen: überschreiben, abbrechen oder neuen Slug wählen?
+3. **Duplikat-Check:** Prüfen ob im Ablageordner bereits eine Datei für diesen Artikel existiert → falls ja, den User fragen: überschreiben, abbrechen oder neuen Slug wählen?
 4. **Schreiben** der MD-Datei im unten beschriebenen Format (inkl. Originaltext im `<details>`-Block)
-5. **Speichern** nach `/Users/valgard/Documents/!AI/article_summaries/{dateiname}.md`
+5. **Speichern** nach `<Ablageordner>/{dateiname}.md`
 
 **Bei Zugriffsfehler** (Paywall, 403 + cURL-Fallback schlägt fehl): User informieren und abbrechen. Keine Teildatei auf Basis unvollständiger Inhalte erstellen.
 
@@ -29,7 +47,7 @@ Verarbeite **{$ARGUMENTS}** — je nach Argument-Typ im passenden Modus.
 
 1. **Datei lesen** — bestehende Metadaten (Autor, Quelle, Datum) und Dateiname merken
 2. **Quell-URL extrahieren** aus den Metadaten (`- **Quelle:** <URL>`)
-3. **Artikel abrufen** (WebFetch, bei 403/401 cURL-Fallback)
+3. **Artikel abrufen** (siehe *Abrufen*)
 4. **Datei komplett neu schreiben** — Zusammenfassung und Originaltext auf Basis des aktuellen Artikeltexts neu generieren, im selben Format wie bei "Neu erstellen"
 5. **Dateiname beibehalten** — den bestehenden Dateinamen nicht ändern
 

@@ -19,8 +19,10 @@ The argument decides the mode:
 | Path to a `.md` file | Update one file | Re-fetch the source URL from the file's metadata and regenerate the file; the file name stays |
 | Path to a directory | Update in bulk | Show how many `.md` files will be updated, ask for confirmation, then update each one and report updated vs. skipped |
 
-Summaries are saved to `~/Documents/!AI/article_summaries/`. If a file for the article
-already exists, the skill asks whether to overwrite it, abort, or pick a new name.
+Summaries are saved to the directory in `ARTICLE_SUMMARIES_DIR`, or to
+`~/Documents/article_summaries/` when it is unset or empty; the directory is created if it is
+missing. If a file for the article already exists, the skill asks whether to overwrite it,
+abort, or pick a new name.
 
 If an article can't be fetched (paywall, or a 403 that the cURL fallback can't get
 past either), the skill stops and says so. It never writes a file from partial content,
